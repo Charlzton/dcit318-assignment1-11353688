@@ -7,54 +7,29 @@ class Program
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("=== Interactive Calculator Suite ===");
-            Console.WriteLine("1. Grade Calculator");
-            Console.WriteLine("2. Exit");
-            Console.Write("\nSelect an option: ");
+            Console.WriteLine("=== Ticket Price Calculator ===");
+            Console.WriteLine("Enter your age to calculate the movie ticket price.");
+            Console.WriteLine("Seniors (65+) and children (12 or younger) get a discounted price.");
 
-            string choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    RunGradeCalculator();
-                    break;
-                case "2":
-                    return;
-                default:
-                    Console.WriteLine("Invalid input.");
-                    break;
-            }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
-        }
-    }
-
-    static void RunGradeCalculator()
-    {
-        Console.Clear();
-        Console.WriteLine("=== Grade Calculator ===");
-
-        while (true)
-        {
-            Console.Write("Enter grade (or q to quit): ");
+            Console.Write("\nEnter age (or 'q' to exit): ");
             string input = Console.ReadLine();
-            if (input.ToLower() == "q") return;
 
-            if (!double.TryParse(input, out double grade))
+            if (input.ToLower() == "q")
+                return;
+
+            if (!int.TryParse(input, out int age) || age < 0)
             {
-                Console.WriteLine("Invalid grade. Try again.");
-                continue;
+                Console.WriteLine("Invalid input. Please enter a valid age (non-negative number).");
+            }
+            else
+            {
+                decimal ticketPrice = (age <= 12 || age >= 65) ? 7.00m : 10.00m;
+                Console.WriteLine($"\nAge: {age}");
+                Console.WriteLine($"Ticket Price: GHC{ticketPrice:F2}");
             }
 
-            char gradeLetter = grade >= 90 ? 'A' :
-                               grade >= 80 ? 'B' :
-                               grade >= 70 ? 'C' :
-                               grade >= 60 ? 'D' : 'F';
-
-            Console.WriteLine($"Letter Grade: {gradeLetter}");
-            break;
+            Console.WriteLine("\nPress any key to try again...");
+            Console.ReadKey();
         }
     }
 }
