@@ -4,32 +4,53 @@ class Program
 {
     static void Main(string[] args)
     {
-        while (true)
+        Console.Clear();
+        Console.WriteLine("=== Triangle Type Identifier ===");
+        Console.WriteLine("Enter the lengths of three sides of a triangle to determine its type.");
+
+        double[] sides = new double[3];
+        string[] sideNames = { "first", "second", "third" };
+
+        for (int i = 0; i < 3; i++)
         {
-            Console.Clear();
-            Console.WriteLine("=== Ticket Price Calculator ===");
-            Console.WriteLine("Enter your age to calculate the movie ticket price.");
-            Console.WriteLine("Seniors (65+) and children (12 or younger) get a discounted price.");
-
-            Console.Write("\nEnter age (or 'q' to exit): ");
-            string input = Console.ReadLine();
-
-            if (input.ToLower() == "q")
-                return;
-
-            if (!int.TryParse(input, out int age) || age < 0)
+            while (true)
             {
-                Console.WriteLine("Invalid input. Please enter a valid age (non-negative number).");
-            }
-            else
-            {
-                decimal ticketPrice = (age <= 12 || age >= 65) ? 7.00m : 10.00m;
-                Console.WriteLine($"\nAge: {age}");
-                Console.WriteLine($"Ticket Price: GHC{ticketPrice:F2}");
-            }
+                Console.Write($"\nEnter the length of the {sideNames[i]} side (or 'q' to exit): ");
+                string input = Console.ReadLine();
 
-            Console.WriteLine("\nPress any key to try again...");
-            Console.ReadKey();
+                if (input.ToLower() == "q")
+                    return;
+
+                if (!double.TryParse(input, out double side) || side <= 0)
+                {
+                    Console.WriteLine("Invalid input. Please enter a positive number.");
+                    continue;
+                }
+
+                sides[i] = side;
+                break;
+            }
         }
+
+        // Check if it's a valid triangle
+        if (sides[0] + sides[1] <= sides[2] ||
+            sides[1] + sides[2] <= sides[0] ||
+            sides[0] + sides[2] <= sides[1])
+        {
+            Console.WriteLine("\n❌ These sides cannot form a valid triangle.");
+            return;
+        }
+
+        string triangleType;
+        if (Math.Abs(sides[0] - sides[1]) < 0.0001 && Math.Abs(sides[1] - sides[2]) < 0.0001)
+            triangleType = "Equilateral";
+        else if (Math.Abs(sides[0] - sides[1]) < 0.0001 ||
+                 Math.Abs(sides[1] - sides[2]) < 0.0001 ||
+                 Math.Abs(sides[0] - sides[2]) < 0.0001)
+            triangleType = "Isosceles";
+        else
+            triangleType = "Scalene";
+
+        Console.WriteLine($"\n✔️ Triangle Type: {triangleType}");
     }
 }
